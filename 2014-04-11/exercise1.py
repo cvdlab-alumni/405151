@@ -14,7 +14,6 @@ base = T([1,2])([-100,-100])(base)
 #######################################################################################################
 #########################################     piani   #################################################
 
-
 floor1 = checkModel(larCircle(23)(8))
 floor2 = checkModel(larCircle(9)(8))
 floor3 = checkModel(larCircle(4)(8))
@@ -33,7 +32,6 @@ secondFloor = T(3)(12)(groundFloor)
 roof = T(3)(24)(groundFloor)
 
 cortile = T(3)(3)(floor2)
-
 
 floor3 = PROD([Q(0.5),floor3])
 floor3 = ROTN([PI,[1,0,1]])(floor3)

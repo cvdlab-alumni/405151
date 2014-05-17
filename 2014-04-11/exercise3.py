@@ -19,14 +19,12 @@ parete = PROD([Q(1),parete])
 
 parete = S([1,3])([20,10])(parete)
 
-
 finestra = CUBOID([1,1,2])
 finestra = T([1,3])([2,7])(finestra)
 finestre = STRUCT( CAT(N(7)([finestra, T(1)(2)])) )
 finestre = STRUCT([T(3)(-3)(finestre),finestre,T(3)(-6)(finestre)])
 
 parete = DIFF([parete,finestre])
-
 
 parete2 = R([1,2])(PI/2)(parete)
 parete2 = T(1)(1)(parete2)
@@ -59,5 +57,5 @@ palazzo = T([1,2])([-80,70])(palazzo)
 palazzo = R([1,2])(PI)(palazzo)
 palazzi = STRUCT([ T([1,2])([0,50])(palazzo),palazzo, T([1,2])([-50,0])(palazzo)])
 
-VIEW(STRUCT([castello, palazzi ]))
+VIEW(STRUCT([castello, palazzi]))
 

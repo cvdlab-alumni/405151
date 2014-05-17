@@ -75,22 +75,65 @@ mura_esterne = DIFF([mura_esterne, finestra])
 #########################################  feritoie  ##########################################################
 
 feritoia = obj
-feritoia = S([1,3])([.2,.5])(feritoia)
-feritoia= R([1,2])(-20)(feritoia)
-feritoia = T([1,2,3])([2.5,1.3,7])(feritoia)
-feritoia1 = T(3)(10)(feritoia)
-feritoie = STRUCT([feritoia1,feritoia])
+feritoia = S([1,3])([.1,.5])(feritoia)
 
-torreConFeritoie = DIFF([torre,COLOR(BLACK)(feritoie)])
+feritoiaNord = R([1,2])(-20)(feritoia)
+feritoiaEst = R([1,2])(-2)(feritoia)
+feritoiaOvest = R([1,2])(-0.4)(feritoia)
 
-torri = STRUCT([T([1,2])([0,23])(torreConFeritoie),T([1,2])([-23,0])(torreConFeritoie),
-	T([1,2])([0,-23])(torreConFeritoie),T([1,2])([23,0])(torreConFeritoie),
-	T([1,2])([-17,17])(torreConFeritoie),T([1,2])([17,-17])(torreConFeritoie),
-	T([1,2])([-17,-17])(torreConFeritoie),T([1,2])([17,17])(torreConFeritoie)])
+feritoiaNord = T([1,2,3])([2.4,1.3,7])(feritoiaNord)
+feritoiaEst = T([1,2,3])([2.6,-1,7])(feritoiaEst)
+feritoiaOvest = T([1,2,3])([1,2.6,7])(feritoiaOvest)
+
+feritoia2Nord = T(3)(10)(feritoiaNord)
+feritoia2Est = T(3)(10)(feritoiaEst)
+feritoia2Ovest = T(3)(10)(feritoiaOvest)
+
+feritoie = STRUCT([feritoiaNord, feritoia2Nord, feritoia2Est, feritoiaEst, feritoiaOvest, feritoia2Ovest])
+
+###############################################################################################################
+#########################################  porta torre  #######################################################
+
+porta_torre = T([1,2])([-10.5,-4.8])(porta_interna) 
+porta2torre = T(3)(10)(porta_torre) 
+porteTorre = STRUCT([porta_torre,porta2torre])
+
+feritoie_porte = STRUCT([feritoie,porteTorre])
+torreConFeritoie = DIFF([torre, feritoie_porte])
+
+torri_nord = R([1,2])(PI)(torreConFeritoie)
+torri_est = R([1,2])(PI/2)(torreConFeritoie)
+torri_ovest = R([1,2])(-PI/2)(torreConFeritoie)
+
+torri = STRUCT([
+
+	T([1,2])([0,23])(torri_est),
+	T([1,2])([-17,17])(torri_est),
+
+	T([1,2])([0,-23])(torri_ovest),
+	T([1,2])([17,-17])(torri_ovest),
+
+	T([1,2])([-17,-17])(torri_nord),
+	T([1,2])([-23,0])(torri_nord),
+
+	T([1,2])([23,0])(torreConFeritoie),
+	T([1,2])([17,17])(torreConFeritoie)
+
+	])
+
+###############################################################################################################
+#########################################  comp castello  #####################################################
+ 
+mura_interne = MATERIAL([1,0,0,1,  0,1,0,1,  0,0,1,0, 0,0,0,1, 100])(mura_interne)
+mura_esterne = MATERIAL([1,0,0,1,  0,1,0,1,  0,0,1,0, 0,0,0,1, 100])(mura_esterne)
+piani = MATERIAL([1,0,0,1,  0,1,0,1,  0,0,1,0, 0,0,0,1, 100])(piani)
+torri = MATERIAL([1,0,0,1,  0,1,0,1,  0,0,1,0, 0,0,0,1, 100])(torri)
+scala = MATERIAL([1,0,0,1,  0,1,0,1,  0,0,1,0, 0,0,0,1, 100])(scala)
+colonne = MATERIAL([1,0,0,1,  0,1,0,1,  0,0,1,0, 0,0,0,1, 100])(colonne)
 
 castello = STRUCT([mura_interne, mura_esterne, piani, torri, scala,COLOR(GREEN)(base),colonne, COLOR(GREEN)(cortile)])
 
-#VIEW(castello)
+VIEW(castello)
 
 
 
