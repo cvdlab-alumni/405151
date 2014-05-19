@@ -11,127 +11,62 @@ from boolean import *
 from sysml import *
 from myfont import *
 from architectural import *
+from scala import *
 
-DRAW = COMP([STRUCT,MKPOLS])
-
-
-shape = [7,7,2]
-sizePatterns = [[.3,3,.1,4,.1,1,.3],[.3,3,.1,1,.1,2,.3],[.3,2.7]]
-
+DRAW = COMP([VIEW,STRUCT,MKPOLS])
+DRAW1 = COMP([STRUCT,MKPOLS])
 
 # piano terra
-pianoTerra = assemblyDiagramInit(shape)(sizePatterns)
+pianoTerra = assemblyDiagramInit([7,7,2])([[.3,3,.1,4,.1,1,.3],[.3,3,.1,.7,.1,2,.3],[.3,2.7]])
+#DRAW(pianoTerra)
+garage = assemblyDiagramInit([1,1,2])([[1],[.3],[2.2,.5]])
+portaScale = assemblyDiagramInit([1,3,2])([[1],[.2,.8,.2],[2.2,.5]])
+portaSala = assemblyDiagramInit([3,1,2])([[.1,.3,.9],[1],[2.2,.5]])
+porta2 = assemblyDiagramInit([3,1,2])([[.3,.4,.3],[1],[2.2,.5]])
+portaSga = assemblyDiagramInit([1,3,2])([[1],[.2,.8,.2],[2.2,.5]])
+finestre = assemblyDiagramInit([8,1,3])([[.25,.2,.15,.2,.15,.2,.1,.2],[1],[.6,.6,.6]])
+finestre2 = assemblyDiagramInit([4,1,3])([[.4,.4,.3,.1],[1],[.6,.6,.6]])
+pareteScala = assemblyDiagramInit([2,1,1])([[.5,.5],[1],[1]])
+
+
+pianoTerra = diagram2cell(portaSga,pianoTerra,63)
+pianoTerra = diagram2cell(finestre,pianoTerra,55)
+pianoTerra = diagram2cell(portaSala,pianoTerra,51)
+pianoTerra = diagram2cell(portaScale,pianoTerra,35)
+pianoTerra = diagram2cell(finestre2,pianoTerra,27)
+pianoTerra = diagram2cell(pareteScala,pianoTerra,23)
+pianoTerra = diagram2cell(garage,pianoTerra,3)
+pianoTerra = diagram2cell(porta2,pianoTerra,146)
+
 V,CV = pianoTerra
 hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
 hpc = cellNumbering (pianoTerra,hpc)(range(len(CV)),CYAN,2)
-
-toRemove = [45,31,17,73,53,49,47,75,77,81,95,83,80,94,83,97,82,96,21,25]
-pianoTerra = V,[cell for k,cell in enumerate(CV) if not (k in toRemove)]
-
-
-## garage
-toMerge = 3
-cell = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-diagram = assemblyDiagramInit([1,1,2])([[1],[.3],[2.2,.5]])
-pianoTerra = diagram2cell(diagram,pianoTerra,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
 #VIEW(hpc)
 
-toRemove = [78]
-pianoTerra = pianoTerra[0], [cell for k,cell in enumerate(pianoTerra[1]) if not (k in toRemove)]
-#DRAW(pianoTerra)
+emptyChain = [16,28,41,66,149,129,123,43,45,68,
+				23,137,20,146,88,74,76,90,89,75,
+				73,87,48,93,70,101,107,145,150]
+			
+solidCV = [cell for k,cell in enumerate(pianoTerra[1]) if not (k in emptyChain)]
+exteriorCV =  [cell for k,cell in enumerate(pianoTerra[1]) if k in emptyChain]
+exteriorCV += exteriorCells(pianoTerra)
 
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
+#DRAW((pianoTerra[0],solidCV))
 
-## porta scale
-toMerge = 30
-cell = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
+#first = DRAW1((pianoTerra[0],solidCV))
+#scala = R([1,2])(PI/2)(scala)
+#first = STRUCT([first, T([1,2,3])([2,3.4,.3])(scala)])
+ground0 = pianoTerra[0],solidCV
+#VIEW(first)
 
-diagram = assemblyDiagramInit([1,3,2])([[1],[.2,.8,.2],[2.2,.5]])
-pianoTerra = diagram2cell(diagram,pianoTerra,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
+CV = solidCV + exteriorCV
+V = pianoTerra[0]
+FV = [f for f in larFacets((V,CV),3,len(exteriorCV))[1] if len(f) >= 4]
+#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS((V,FV))))
+BF = boundaryCells(solidCV,FV) 
+boundaryFaces = [FV[face] for face in BF] 
+B_Rep = V,boundaryFaces 
 
-toRemove = [80]
-pianoTerra = pianoTerra[0], [cell for k,cell in enumerate(pianoTerra[1]) if not (k in toRemove)]
-#DRAW(pianoTerra)
-
-
-## porta saletta
-toMerge = 42
-cell = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-diagram = assemblyDiagramInit([3,1,2])([[.1,.3,.9],[1],[2.2,.5]])
-pianoTerra = diagram2cell(diagram,pianoTerra,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [84]
-pianoTerra = pianoTerra[0], [cell for k,cell in enumerate(pianoTerra[1]) if not (k in toRemove)]
-#DRAW(pianoTerra)
-
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
-
-## porta sgabuzzino
-toMerge = 52
-cell = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-diagram = assemblyDiagramInit([1,3,2])([[1],[.2,.8,.2],[2.2,.5]])
-pianoTerra = diagram2cell(diagram,pianoTerra,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [88]
-pianoTerra = pianoTerra[0], [cell for k,cell in enumerate(pianoTerra[1]) if not (k in toRemove)]
-#DRAW(pianoTerra)
-
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
-
-## finestre 
-toMerge = 44
-cell = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-diagram = assemblyDiagramInit([8,1,3])([[.25,.2,.15,.2,.15,.2,.1,.2],[1],[.6,.6,.6]])
-pianoTerra = diagram2cell(diagram,pianoTerra,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [94,100,106]
-pianoTerra = pianoTerra[0], [cell for k,cell in enumerate(pianoTerra[1]) if not (k in toRemove)]
-#DRAW(pianoTerra)
-
-## finestre 
-toMerge = 20
-cell = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-diagram = assemblyDiagramInit([4,1,3])([[.4,.4,.3,.1],[1],[.6,.6,.6]])
-pianoTerra = diagram2cell(diagram,pianoTerra,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
-hpc = cellNumbering (pianoTerra,hpc)(range(len(pianoTerra[1])),CYAN,2)
-#VIEW(hpc)
-
-
-toRemove = [116,117,112,111]
-pianoTerra = pianoTerra[0], [cell for k,cell in enumerate(pianoTerra[1]) if not (k in toRemove)]
-
-#VIEW(SKEL_1(DRAW(pianoTerra)))
-#VIEW(DRAW(pianoTerra))
+#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS(B_Rep))) 
+#VIEW(STRUCT(MKPOLS(B_Rep)))
 

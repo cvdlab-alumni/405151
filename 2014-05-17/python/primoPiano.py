@@ -12,165 +12,64 @@ from sysml import *
 from myfont import *
 from architectural import *
 
-DRAW = COMP([STRUCT,MKPOLS])
+DRAW = COMP([VIEW,STRUCT,MKPOLS])
+DRAW1 = COMP([STRUCT,MKPOLS])
+
 ################################################################################################
 ## primo piano
 primoPiano = assemblyDiagramInit([11,9,2])([[.3,1.5,.1,1.4,.1,1.9,.1,2,.1,1,.3],[.3,1.9,.1,2,.1,1,.1,1,.3],[.3,2.7]])
-V1,CV1 = primoPiano
+portaBagno = assemblyDiagramInit([3,1,2])([[.1,.3,.1],[1],[2.2,.5]])
+finestra1 = assemblyDiagramInit([1,2,2])([[1],[.3,.1],[2.2,.5]])
+finestra2 = assemblyDiagramInit([1,2,2])([[1],[.1,.3],[2.2,.5]])
+finestra3 = assemblyDiagramInit([1,2,2])([[1],[.3,.2],[2.2,.5]])
+finestra4 = assemblyDiagramInit([1,2,2])([[1],[.2,.3],[2.2,.5]])
+portaCucina = assemblyDiagramInit([1,3,2])([[1],[.1,.3,.1],[2.2,.5]])
+portaP = assemblyDiagramInit([1,3,2])([[1],[.1,.4,.1],[2.2,.5]])
+finestraCucina = assemblyDiagramInit([3,1,3])([[.1,.5,.1],[1],[.4,.4,.2]])
+finestraBagno = assemblyDiagramInit([3,1,3])([[.5,.3,.2],[1],[.4,.3,.3]])
+pareteScale = assemblyDiagramInit([1,1,2])([[1],[1],[.2,.8]])
+
+
+primoPiano = diagram2cell(finestra1,primoPiano,187)
+primoPiano = diagram2cell(finestra2,primoPiano,183)
+primoPiano = diagram2cell(finestra4,primoPiano,159)
+primoPiano = diagram2cell(finestra3,primoPiano,155)
+primoPiano = diagram2cell(portaCucina,primoPiano,119)
+primoPiano = diagram2cell(finestraCucina,primoPiano,107)
+primoPiano = diagram2cell(portaBagno,primoPiano,67)
+primoPiano = diagram2cell(portaCucina,primoPiano,47)
+primoPiano = diagram2cell(finestraBagno,primoPiano,35)
+primoPiano = diagram2cell(pareteScale,primoPiano,27)
+primoPiano = diagram2cell(portaP,primoPiano,3)
+
+V,CV = primoPiano
 hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(CV1)),CYAN,2)
+hpc = cellNumbering (primoPiano,hpc)(range(len(CV)),CYAN,2)
+VIEW(hpc)
+
+emptyChain = [20,36,53,70,24,40,57,22,38,55,92,109,
+				126,144,160,142,158,90,107,124,122,
+				88,105,140,156,70,53,36,169,185,167,
+				183,165,181,163,179,170,185,168,164,
+				180,31,47,64,100,98,96,134,132,130,213,
+				128,226,27,184,182,186,166,61,220,59,
+				240,26,243,187,193,205,234,195,201]
+
+solidCV = [cell for k,cell in enumerate(primoPiano[1]) if not (k in emptyChain)]
+exteriorCV =  [cell for k,cell in enumerate(primoPiano[1]) if k in emptyChain]
+exteriorCV += exteriorCells(primoPiano)
+
+DRAW((primoPiano[0],solidCV))
+ground1 = primoPiano[0],solidCV
+
+CV = solidCV + exteriorCV
+V = primoPiano[0]
+FV = [f for f in larFacets((V,CV),3,len(exteriorCV))[1] if len(f) >= 4]
+#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS((V,FV))))
+BF = boundaryCells(solidCV,FV) 
+boundaryFaces = [FV[face] for face in BF] 
+B_Rep = V,boundaryFaces 
+#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS(B_Rep))) 
+#VIEW(STRUCT(MKPOLS(B_Rep)))
 
 
-toRemove = [33,69,105,141,177,29,65,25,61,21,57,93,129,
-			197,133,165,169,101,137,173,97,195,191,196,
-			172,135,139,173,191,167,131,111,
-			75,39,23,59,43,41,95,115,113,103,151,149,147,
-			63,51,194,192,190,196,178,176,172,175,179,193,174,28]
-
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-
-# porta bagno
-toMerge = 52
-cell = MKPOL([primoPiano[0],[[v+1 for v in  primoPiano[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-
-diagram = assemblyDiagramInit([3,1,2])([[.1,.3,.1],[1],[2.2,.5]])
-primoPiano = diagram2cell(diagram,primoPiano,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [144]
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-#DRAW(primoPiano)
-
-
-# finestra salone
-toMerge = 139
-cell = MKPOL([primoPiano[0],[[v+1 for v in  primoPiano[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-
-diagram = assemblyDiagramInit([1,2,2])([[1],[.3,.1],[2.2,.5]])
-primoPiano = diagram2cell(diagram,primoPiano,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [146]
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-
-toMerge = 135
-cell = MKPOL([primoPiano[0],[[v+1 for v in  primoPiano[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-
-diagram = assemblyDiagramInit([1,2,2])([[1],[.1,.3],[2.2,.5]])
-primoPiano = diagram2cell(diagram,primoPiano,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [150]
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-#VIEW(hpc)
-#DRAW(primoPiano)
-
-# finestra sala pranzo
-toMerge = 122
-cell = MKPOL([primoPiano[0],[[v+1 for v in  primoPiano[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-
-diagram = assemblyDiagramInit([1,2,2])([[1],[.3,.2],[2.2,.5]])
-primoPiano = diagram2cell(diagram,primoPiano,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [150]
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-#VIEW(hpc)
-#DRAW(primoPiano)
-
-toMerge = 118
-cell = MKPOL([primoPiano[0],[[v+1 for v in  primoPiano[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-
-diagram = assemblyDiagramInit([1,2,2])([[1],[.2,.3],[2.2,.5]])
-primoPiano = diagram2cell(diagram,primoPiano,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [154]
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-
-#DRAW(primoPiano)
-
-# porta cucina
-toMerge = 92
-cell = MKPOL([primoPiano[0],[[v+1 for v in  primoPiano[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-
-diagram = assemblyDiagramInit([1,3,2])([[1],[.1,.3,.1],[2.2,.5]])
-primoPiano = diagram2cell(diagram,primoPiano,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [156]
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-#DRAW(primoPiano)
-
-# porta principale
-toMerge = 3
-cell = MKPOL([primoPiano[0],[[v+1 for v in  primoPiano[1][toMerge]]],None])
-#VIEW(STRUCT([hpc,cell]))
-
-
-diagram = assemblyDiagramInit([1,3,2])([[1],[.1,.4,.1],[2.2,.5]])
-primoPiano = diagram2cell(diagram,primoPiano,toMerge)
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-#VIEW(hpc)
-
-toRemove = [160]
-
-primoPiano = primoPiano[0], [cell for k,cell in enumerate(primoPiano[1]) if not (k in toRemove)]
-hpc = SKEL_1(STRUCT(MKPOLS(primoPiano)))
-hpc = cellNumbering (primoPiano,hpc)(range(len(primoPiano[1])),CYAN,2)
-
-#VIEW(SKEL_1(DRAW(primoPiano)))
-#VIEW(DRAW(primoPiano))
