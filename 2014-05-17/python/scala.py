@@ -11,6 +11,7 @@ from boolean import *
 from sysml import *
 from myfont import *
 from architectural import *
+from splines import *
 
 
 
@@ -20,6 +21,8 @@ def funScala(l,h,p,n):
 	for i in range(1,n):
 		scala = STRUCT([scala, T([2,3])([h*i,p*i])(scalino)])
 	return scala
+
+
 
 
 
@@ -34,5 +37,7 @@ b = T([1,2,3])([2.4,1,1.8])(b)
 c = funScala(1,.2,.2,5)
 
 scala = STRUCT([c,piano,a,piano2,b])
+
+
 
 

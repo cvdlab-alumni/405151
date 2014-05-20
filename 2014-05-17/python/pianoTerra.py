@@ -16,6 +16,12 @@ from scala import *
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 DRAW1 = COMP([STRUCT,MKPOLS])
 
+BROWN= Color4f([0.83, 0.65, 0.5, 1.0])
+P_GREEN = Color4f([0.05, 0.6, 0.08, 1.0])
+P_DGREEN = Color4f([0.06, 0.25, 0, 1.0])
+P_DGRAY	= Color4f([0.6, 0.6, 0.6, 1.0])
+
+
 # piano terra
 pianoTerra = assemblyDiagramInit([7,7,2])([[.3,3,.1,4,.1,1,.3],[.3,3,.1,.7,.1,2,.3],[.3,2.7]])
 #DRAW(pianoTerra)
@@ -43,19 +49,79 @@ hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
 hpc = cellNumbering (pianoTerra,hpc)(range(len(CV)),CYAN,2)
 #VIEW(hpc)
 
+
 emptyChain = [16,28,41,66,149,129,123,43,45,68,
 				23,137,20,146,88,74,76,90,89,75,
-				73,87,48,93,70,101,107,145,150]
+				73,87,48,93,70,101,107,145,150,113]
 			
 solidCV = [cell for k,cell in enumerate(pianoTerra[1]) if not (k in emptyChain)]
 exteriorCV =  [cell for k,cell in enumerate(pianoTerra[1]) if k in emptyChain]
 exteriorCV += exteriorCells(pianoTerra)
 
-#DRAW((pianoTerra[0],solidCV))
 
-#first = DRAW1((pianoTerra[0],solidCV))
-#scala = R([1,2])(PI/2)(scala)
-#first = STRUCT([first, T([1,2,3])([2,3.4,.3])(scala)])
+## garage chiuso
+cell = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][146]]],None])
+portaGarC = S(1)(.1)(cell)
+portaGar = R([1,3])(PI/2)(portaGarC)
+portaGar = T([1,3])([2.3,2.3])(portaGar)
+### garage aperto
+portaGar = COLOR(P_GREEN)(portaGar)
+
+
+
+finestra1 = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][101]]],None])
+finestra2 = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][107]]],None])
+finestra3 = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][113]]],None])
+finestra4 = MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][137]]],None])
+
+porta1 =MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][123]]],None])
+porta2 =MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][150]]],None])
+porta3 =MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][129]]],None])
+porta4 =MKPOL([pianoTerra[0],[[v+1 for v in  pianoTerra[1][93]]],None])
+
+
+# Materials(want a list of 17 elements(ambientRGBA, diffuseRGBA, specularRGBA, emissionRGBA, shininess)
+
+glass = [0.1,0.2,0.3,1,  0,0,0,0.5,  2,2,2,1, 0,0,0,1, 100]
+water = [0.05,0.4,0.4,1,  0,0.3,0.3,0.5,  2,2,2,1, 0,0,0,1, 100]
+
+
+finestra1 = S(2)(.1)(finestra1)
+finestra2 = S(2)(.1)(finestra2)
+finestra3 = S(2)(.1)(finestra3)
+finestra4 = S(2)(.1)(finestra4)
+
+porta1 = S(2)(.2)(porta1)
+porta2 = S(2)(.2)(porta2)
+porta3 = S(1)(.2)(porta3)
+porta4 = S(1)(.2)(porta4)
+
+
+finestra1 = MATERIAL(glass)(T(2)(5.8)(finestra1))
+finestra2 =  MATERIAL(glass)(T(2)(5.8)(finestra2))
+finestra3 =  MATERIAL(glass)(T(2)(5.8)(finestra3))
+finestra4 =  MATERIAL(glass)(T(2)(5.8)(finestra4))
+
+porta1 =  COLOR(BROWN)(T(2)(3.4)(porta1))
+porta2 =  COLOR(BROWN)(T(2)(3.4)(porta2))
+porta3 =  COLOR(BROWN)(T(1)(2.7)(porta3))
+porta4 =  COLOR(BROWN)(T(1)(5.9)(porta4))
+
+#VIEW(STRUCT([hpc,porta3,porta4,porta2,porta1,portaGar,finestra4,finestra2,finestra1,finestra3]))
+
+##  finestre salette
+
+struttura = DRAW1((pianoTerra[0],solidCV))
+
+
+struttura = STRUCT([struttura,porta3,porta4,porta2,porta1,portaGar,finestra4,finestra2,finestra1,finestra3])
+
+#VIEW(struttura)
+
+
+first = DRAW1((pianoTerra[0],solidCV))
+scala = R([1,2])(PI/2)(scala)
+first = STRUCT([first, T([1,2,3])([2,3.4,.3])(scala)])
 ground0 = pianoTerra[0],solidCV
 #VIEW(first)
 

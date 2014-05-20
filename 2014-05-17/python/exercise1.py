@@ -12,49 +12,40 @@ from sysml import *
 from myfont import *
 from architectural import *
 from scala import *
-from pianoTerra import *
-from primoPiano import *
-from secondoPiano import *
+from pianoTerra import struttura
+from primoPiano import struttura1
+from secondoPiano import struttura2
 
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 DRAW1 = COMP([STRUCT,MKPOLS])
 
+
+
 ########################## blocco unico ############################
 
-casa = assemblyDiagramInit([1,1,3])([[10],[10],[3.3,3.3,3.3]])
 
-V,CV = casa
-hpc = SKEL_1(STRUCT(MKPOLS(casa)))
-hpc = cellNumbering (casa,hpc)(range(len(CV)),CYAN,2)
-#VIEW(hpc)
-
-
-casa = diagram2cell(ground2,casa,2)
-casa = diagram2cell(ground1,casa,1)
-casa = diagram2cell(ground0,casa,0)
-
-V,CV = casa
-hpc = SKEL_1(STRUCT(MKPOLS(casa)))
-hpc = cellNumbering (casa,hpc)(range(len(CV)),CYAN,2)
-#VIEW(hpc)
-
-solidCV = [cell for k,cell in enumerate(casa[1])]
-#DRAW((casa[0],solidCV))
-
-
-first = DRAW1((casa[0],solidCV))
+scala = S(1)(.8)(scala)
 scala = R([1,2])(PI/2)(scala)
+scala= T([1,2])([2.2,3.3])(scala)
 
-pianerottolo = CUBOID([1.2,1.5,.3])
-pianerottolo = T([1,2,3])([2,6.5,6.625])(pianerottolo)
+scala1 = S([1,2])([.8,1.1])(scala)
+scala1 = T([1,2])([.2,-.4])(scala1)
 
-first = STRUCT([first, T([1,2,3])([2,5.1,.3])(scala), T([1,2,3])([2,5.3,3.6])(scala), pianerottolo])
+struttura = STRUCT([struttura,scala])
+struttura = S(2)(1.05)(struttura)
+#VIEW(struttura)
+struttura1 = STRUCT([struttura1,scala1])
+#VIEW(struttura1)
 
 
+pianerottolo = CUBOID([1,1,.1])
+pianerottolo = T([1,2])([1.8,4.4])(pianerottolo)
 
-VIEW(first)
+struttura2 = STRUCT([struttura2,pianerottolo])
 
 
+casa = STRUCT([struttura, T(3)(3)(struttura1), T(3)(6)(struttura2)])
 
+VIEW(casa)
 
 
