@@ -112,8 +112,6 @@ porta4 =  COLOR(BROWN)(T(1)(5.9)(porta4))
 ##  finestre salette
 
 struttura = DRAW1((pianoTerra[0],solidCV))
-
-
 struttura = STRUCT([struttura,porta3,porta4,porta2,porta1,portaGar,finestra4,finestra2,finestra1,finestra3])
 
 #VIEW(struttura)

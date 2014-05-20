@@ -18,11 +18,7 @@ DRAW1 = COMP([STRUCT,MKPOLS])
 glass = [0.1,0.2,0.3,1,  0,0,0,0.5,  2,2,2,1, 0,0,0,1, 100]
 BROWN= Color4f([0.83, 0.65, 0.5, 1.0])
 
-
-
 ##################################################	secondo piano   ##############################################
-
-
 
 secondoPiano = assemblyDiagramInit([9,9,2])([[.3,2.5,.1,1.3,.1,3.1,.1,1,.3],[.3,2.5,.1,1.4,.1,1,.1,1,.3],[.3,2.7]])
 portaSga = assemblyDiagramInit([1,3,2])([[1],[.1,.3,.1],[2.2,.5]])
@@ -35,9 +31,6 @@ finestra4 = assemblyDiagramInit([1,2,3])([[1],[.1,.2],[1.5,2.2,.5]])
 finestra1 = assemblyDiagramInit([1,3,2])([[1],[.2,.3,.5],[2.2,.5]])
 finestra3 = assemblyDiagramInit([1,3,2])([[1],[.1,.3,.1],[2.2,.5]])
 pareteScale = assemblyDiagramInit([2,1,1])([[.7,.3],[1],[1]])
-
-
-
 
 '''V,CV = secondoPiano
 hpc = SKEL_1(STRUCT(MKPOLS(secondoPiano)))
@@ -73,7 +66,6 @@ exteriorCV += exteriorCells(secondoPiano)
 
 struttura2 = DRAW1((secondoPiano[0],solidCV))
 
-
 finestra1 = MKPOL([secondoPiano[0],[[v+1 for v in  secondoPiano[1][209]]],None])
 finestra2 = MKPOL([secondoPiano[0],[[v+1 for v in  secondoPiano[1][202]]],None])
 finestra3 = MKPOL([secondoPiano[0],[[v+1 for v in  secondoPiano[1][167]]],None])
@@ -86,7 +78,6 @@ porta2 = MKPOL([secondoPiano[0],[[v+1 for v in  secondoPiano[1][183]]],None])
 porta3 = MKPOL([secondoPiano[0],[[v+1 for v in  secondoPiano[1][195]]],None])
 porta4 = MKPOL([secondoPiano[0],[[v+1 for v in  secondoPiano[1][171]]],None])
 porta5 = MKPOL([secondoPiano[0],[[v+1 for v in  secondoPiano[1][177]]],None])
-
 
 finestra1 = S(1)(.1)(finestra1)
 finestra2 = S(1)(.1)(finestra2)
@@ -115,13 +106,10 @@ finestra5 =  MATERIAL(glass)(T(1)(7.8)(finestra5))
 #VIEW(STRUCT([hpc,finestra1,finestra2,finestra3,finestra4,finestra5,porta1,porta2,porta3,porta4,porta5]))
 
 ###  utilizzo spline per tagliare piano
-
-
 controlpoints = [[-0,0],[1,0],[1,1]]
 dom = larDomain([32],'simplex')
 obj = larMap(larBezier(S1)(controlpoints))(dom)
 #VIEW(STRUCT(MKPOLS(obj)))
-
 curva  = STRUCT(MKPOLS(obj))
 
 pts = [[0,0],[0,1],[1,1]]
@@ -131,7 +119,6 @@ pareteC = PROD([curva,Q(3)])
 pareteC = OFFSET([0.01,0.01,0.01])(pareteC)
 pareteC = S([1,2,3])([1.8,1.4,1])(pareteC)
 pareteC = T([1,2])([.3,3])(pareteC)
-
 
 baseC = OFFSET([0.01,0.01,0.01])(baseC)
 baseC = S([1,2,3])([1.8,1.4,.3])(baseC)

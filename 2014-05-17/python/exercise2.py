@@ -13,6 +13,7 @@ from myfont import *
 from architectural import *
 from splines import *
 from exercise1 import casa
+from scala import *
 
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 DRAW1 = COMP([STRUCT,MKPOLS])
@@ -34,7 +35,7 @@ base3 = T(3)(-3.1)(base3)
 giardino1 = CUBOID([1,1,1])
 giardino1 = S([1,2,3])([13,6.3,.1])(giardino1)
 giardino1 = T([1,2,3])([15,-8.2,3])(giardino1)
-giardino1 = COLOR(GREEN)(giardino1)
+giardino1 = COLOR([0,0.6,0.1])(giardino1)
 
 
 giardino2 = S(2)(.3)(giardino1)
@@ -52,7 +53,7 @@ giardinoUP = assemblyDiagramInit([3,5,4])([[.5,10,.5],[.5,3,.5,3,.5],[.5,2,1,.5]
 V,CV = giardinoUP
 hpc = SKEL_1(STRUCT(MKPOLS(giardinoUP)))
 hpc = cellNumbering (giardinoUP,hpc)(range(len(CV)),CYAN,2)
-VIEW(hpc)
+#VIEW(hpc)
 
 emptyChain1 = [27,26,23,22,7,6,3,2,47,46,43,42,35,25]
 
@@ -64,13 +65,14 @@ exteriorCV1 += exteriorCells(giardinoUP)
 gia1 = MKPOL([giardinoUP[0],[[v+1 for v in  giardinoUP[1][35]]],None])
 gia2 = MKPOL([giardinoUP[0],[[v+1 for v in  giardinoUP[1][25]]],None])
 
-gia1 = COLOR(GREEN)(gia1)
-gia2 = COLOR(GREEN)(gia2)
+gia1 = COLOR([0,0.6,0.1])(gia1)
+gia2 = COLOR([0,0.6,0.1])(gia2)
 
 giardinoUP = DRAW1((giardinoUP[0],solidCV1))
 giardinoUP = STRUCT([gia1,gia2,giardinoUP])
 
 giardinoDOWN = giardinoUP
+giardinoRight = giardinoUP
 
 #VIEW(giardinoUP)
 
@@ -83,6 +85,9 @@ giardinoDOWN = R([1,2])(PI)(giardinoDOWN)
 giardinoDOWN = S(1)(1.4)(giardinoDOWN)
 giardinoDOWN = T([1,2,3])([15,15,-4])(giardinoDOWN)
 
+giardinoRight =  R([1,2])(PI)(giardinoRight)
+giardinoRight = S([1,2,3])([.6,.9,.8])(giardinoRight)
+giardinoRight = T([1,2])([-2.5,1])(giardinoRight)
 #### piscina
 piscina = assemblyDiagramInit([3,3,3])([[.5,10,.5],[.5,6,.5],[.5,3,.5]])
 V,CV = piscina
@@ -103,8 +108,44 @@ piscina  = S(3)(.8)(piscina)
 
 #####  albero
 cilindro = COLOR([0.5,0.30,0.1])(CYLINDER([1,5.50])(240))
-chioma = COLOR([0,0.6,0.1])(SPHERE(5)([9,10]))
+chioma = COLOR(GREEN)(SPHERE(5)([9,10]))
 albero = STRUCT([T(3)(10)(chioma),cilindro])
+albero = S([1,2,3])([.2,.2,.2])(albero)
 #VIEW(albero)
 
-VIEW(STRUCT([muro, giardinoDOWN,giardinoUP,base2,base3, giardino3, giardino2, giardino1,base, casa, T([1,2])([15,-2])(piscina)]))
+alberi = STRUCT([T([1,2,3])([11,10,0])(albero), 
+	T([1,2,3])([5,13,-1.5])(albero), 
+	T([1,2,3])([25,-3,3])(albero), 
+	T([1,2,3])([20,-6,3])(albero),
+	T([1,2,3])([8,-9,5.5])(albero)])
+
+scala = R([1,2])(-PI/2)(scala)
+
+###  utilizzo spline per tagliare piano
+controlpoints = [[-0,0],[1,0],[1,1],[2,1],[3,1]]
+dom = larDomain([32],'simplex')
+obj = larMap(larBezier(S1)(controlpoints))(dom)
+
+curva  = STRUCT(MKPOLS(obj))
+#curva = R([1,2])(PI)(curva)
+#VIEW(curva)
+
+pts = [[0,0],[3,0]]
+baseC = JOIN([curva,POLYLINE(pts)])
+baseC = OFFSET([0.01,0.01,0.01])(baseC)
+baseC = S([1,2,3])([3,3,2.5])(baseC)
+baseC = T([1,2,3])([-4.2,0,1])(baseC)
+baseC = R([1,2])(PI)(baseC)
+
+
+pareteC = PROD([curva,Q(3)])
+pareteC = OFFSET([0.01,0.01,0.01])(pareteC)
+pareteC = S([1,2,3])([1.8,1.4,1])(pareteC)
+pareteC = T([1,2])([.3,3])(pareteC)
+
+
+giardinoUP = DIFF([giardinoUP,T([1,2,3])([2,-8,2])(baseC)])
+
+piantaCasa = STRUCT([T([1,2])([9,9])(scala), alberi , muro,giardinoRight, giardinoDOWN,giardinoUP,base2,base3, giardino3, giardino2, giardino1,base, casa, T([1,2])([15,-2])(piscina)])
+
+VIEW(piantaCasa)

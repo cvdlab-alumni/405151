@@ -20,7 +20,6 @@ DRAW = COMP([VIEW,STRUCT,MKPOLS])
 DRAW1 = COMP([STRUCT,MKPOLS])
 
 
-
 ########################## blocco unico ############################
 
 
