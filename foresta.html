@@ -1,4 +1,28 @@
-<script>
+<!DOCTYPE html>
+<html>
+ <head> 
+  <title>Exercise 02</title> 
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+      #stats {  /* Align stats top-left */
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  </style> 
+  </head> 
+  <body>
+    <!-- JavaScript libraries -->
+    <script src="/Users/andreadodero/threeJs/build/three.min.js"></script> 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+  <script src="/Users/andreadodero/threejs-crumbs/examples/assets/libs/TrackballControls.js"></script> 
+    <!-- Javascript code that runs our Three.js examples --> 
+    <script>
       // once everything is loaded, we run our Three.js stuff.
       $(function () {
         var stats = initStats();
@@ -265,5 +289,9 @@
             
         }
 
+
+
       });
-    </script>
+    </script>  
+ </body>
+</html>
