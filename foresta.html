@@ -1,79 +1,295 @@
-<!DOCTYPE html>
-<html>
- <head> 
-  <title>Example 2 - First scene</title> 
-  <style>
-    body{
-      margin: 0;
-      overflow: hidden;
-    }
-  </style> 
-  </head>
-  <body> 
-    <!-- JavaScript libraries -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script> 
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
-    <!-- Javascript code that runs our Three.js examples --> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
       // once everything is loaded, we run our Three.js stuff.
       $(function () {
-
-        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var stats = initStats();
+       
         var scene = new THREE.Scene();
 
-        // create a camera, which defines where we're looking at.
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10);
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
 
-        // create a render and set the size
+
         var renderer = new THREE.WebGLRenderer();
 
-        renderer.setClearColor(new THREE.Color(0xEEEEEE));
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        var trackballControls = new THREE.TrackballControls(camera);
 
-        // create the ground plane
-        var planeGeometry = new THREE.PlaneGeometry(60,20);
-        var planeMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc});
+        renderer.setClearColor(new THREE.Color(0xEEEEEE,1.0));
+        renderer.setSize(window.innerWidth,window.innerHeight);
+        renderer.shadowMapEnabled = true;
+
+        var planeGeometry = new THREE.PlaneGeometry(200,200);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0x008000, side:THREE.DoubleSide});
         var plane = new THREE.Mesh(planeGeometry,planeMaterial);
 
-        // rotate and position the plane
-        plane.rotation.x=-0.5*Math.PI;
-        plane.position.set(15,0,0);
+        plane.rotation.x = -0.5*Math.PI;
+        plane.position.set(0,0,0);
+        plane.receiveShadow = true;
 
-        // add the plane to the scene
         scene.add(plane);
 
-        // create a cube
-        var cubeGeometry = new THREE.BoxGeometry(4,4,4);
-        var cubeMaterial = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
-        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
-        // position the cube
-        cube.position.set(4,3,0);
-
-        // add the cube to the scene
-        scene.add(cube);
-
-        var sphereGeometry = new THREE.SphereGeometry(4,20,20);
-        var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: true});
-        var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
-
-        // position the sphere
-        sphere.position.set(20,4,2);
-
-        // add the sphere to the scene
-        scene.add(sphere);
-
-        // position and point the camera to the center of the scene
-        camera.position.set(-30,40,30);
+         // position and point the camera to the center of the scene
+        //camera.rotation.x= Math.PI*-0.5;
+        camera.position.set(0,50,100);
         camera.up = new THREE.Vector3(0,1,0);
         camera.lookAt(scene.position);
 
+          // add subtle ambient lighting
+        var ambiColor = "#0c0c0c";
+        var ambientLight = new THREE.AmbientLight(ambiColor);
+        scene.add(ambientLight);
+
+        var pointColor = "#ff5808";
+        var directionalLight = new THREE.DirectionalLight(pointColor);
+        directionalLight.position.set(0, 100, 0);
+        directionalLight.castShadow = true;
+        directionalLight.shadowCameraNear = 10;
+        directionalLight.shadowCameraFar = 100;
+        directionalLight.shadowCameraLeft = -20;
+        directionalLight.shadowCameraRight = 20;
+        directionalLight.shadowCameraTop = 20;
+        directionalLight.shadowCameraBottom = -20;
+
+        directionalLight.intensity = 0.5;
+        directionalLight.shadowMapHeight = 1024;
+        directionalLight.shadowMapWidth = 1024;
+
+
+        scene.add(directionalLight);
+
+         // add a small sphere simulating the pointlight
+      var sphereLight = new THREE.SphereGeometry(0.2);
+      var sphereLightMaterial = new THREE.MeshBasicMaterial({color: 0xac6c25});
+      var sphereLightMesh = new THREE.Mesh(sphereLight, sphereLightMaterial);
+      sphereLightMesh.castShadow = true;
+
+      sphereLightMesh.position = new THREE.Vector3(0, -100, 3);
+      scene.add(sphereLightMesh);
+
+        var axisHelper = new THREE.AxisHelper(3);
+        scene.add(axisHelper);
+
+        var foresta = makeForest(10);
+
+             // add spotlight for the shadows
+            var spotLight2 = new THREE.SpotLight( 0xffffff );
+            spotLight2.position.set(10,-50,50);
+            spotLight2.intensity = 0.1;
+            spotLight2.castShadow = true;
+            foresta.add(spotLight2); 
+
+        scene.add(foresta);
+
+        
         // add the output of the renderer to the html element
         $('body').append(renderer.domElement);
 
-        // render the scene
-        renderer.render(scene, camera);
+        // call the render function
+        //renderer.render(scene, camera);
+
+         // call the render function
+      var step = 0;
+
+      var controls = new function () {
+       
+        this.positionX =  0.5;
+        this.positionZ =  0.5;
+        this.showAxis = true;
+        this.ambientColor = ambiColor;
+        this.pointColor = pointColor;
+        this.intensity = 2;
+        this.debug = false;
+        this.castShadow = true;
+        this.onlyShadow = false;
+
+      };
+
+      var gui = new dat.GUI();
+         
+      gui.add(controls, 'positionX',0,1);
+      gui.add(controls, 'positionZ',0,1);
+    
+      var axis_control = gui.add(controls, 'showAxis');
+
+      gui.addColor(controls, 'pointColor').onChange(function (e) {
+          directionalLight.color = new THREE.Color(e);
       });
-    </script>  
- </body>
-</html>
+
+      gui.add(controls, 'intensity', 0, 5).onChange(function (e) {
+          directionalLight.intensity = e;
+      });
+
+      gui.add(controls, 'debug').onChange(function (e) {
+          spotLight2.shadowCameraVisible = e;
+      });
+
+      gui.add(controls, 'castShadow').onChange(function (e) {
+          directionalLight.castShadow = e;
+      });
+
+      gui.add(controls, 'onlyShadow').onChange(function (e) {
+          directionalLight.onlyShadow = e;
+      });
+
+      gui.addColor(controls, 'ambientColor').onChange(function (e) {
+            ambientLight.color = new THREE.Color(e);
+        });
+
+      render();
+
+      var renderCamera = camera;
+
+      axis_control.onChange(function (value) {
+        axisHelper.visible = value;
+      });
+
+      function render() {
+        stats.update();
+        trackballControls.update();
+        
+        step += 0.5;
+
+        sphereLightMesh.position.x = sphereLightMesh.position.x+30*Math.cos(step/3);
+        sphereLightMesh.position.y = sphereLightMesh.position.y+30*Math.sin(step/3);
+        sphereLightMesh.position.z = -8;
+
+        spotLight2.position = sphereLightMesh.position;
+        directionalLight.position = sphereLightMesh.position;
+        
+  
+        // render using requestAnimationFrame
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+        // bounce the sphere up and down
+       
+      }
+
+      function initStats() {
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        $('body').append(stats.domElement);
+        return stats;
+      }
+
+
+        function genApple(chioma, n){
+            var i;
+            for(i=0;i<n;i++){
+             var lat = Math.floor((Math.random() * 360) + 1);
+             var lon = Math.floor((Math.random() * 360) + 1);
+             putApple(chioma, lat,lon);
+            }
+        }
+
+        function putApple(chioma, a,b){
+          
+          var melaGeometry = new THREE.SphereGeometry(1,32,32);
+          var melaMaterial = new THREE.MeshLambertMaterial({color: 0xFF0000});
+          var mela = new THREE.Mesh(melaGeometry,melaMaterial);
+          mela.castShadow = true;
+          var x0=0;
+          var y0=25;
+          var z0=0;
+
+          var x = x0 + 10 * Math.sin(a)*Math.cos(b);
+          var y = y0 + 10 * Math.sin(a)*Math.sin(b);
+          var z = z0 + 10 * Math.cos(a);
+
+          mela.position.set(x,y,z);
+          chioma.add(mela);
+        }
+
+        function getRandomInt(min, max) {
+              return Math.floor(Math.random() * (max - min + 1)) + min;
+          }
+
+        function makeThree(albero){
+
+        var chioma = new THREE.Object3D();
+
+        var geometry = new THREE.CylinderGeometry( 3, 3, 20, 32 );
+        var material = new THREE.MeshLambertMaterial( {color: 0x633D18} );
+        var cylinder = new THREE.Mesh( geometry, material );
+        cylinder.castShadow = true;
+
+        cylinder.position.set(0,10,0);
+        
+        //scene.add( cylinder );
+        albero.add(cylinder);
+
+        var sphereGeometry = new THREE.SphereGeometry(10,32,32);
+        var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x458B00});
+        var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+        sphere.castShadow = true;
+        // position the sphere
+        sphere.position.set(0,25,0);
+        genApple(chioma, 10);
+        // add the sphere to the scene
+   
+        chioma.add(sphere);
+        albero.add(chioma);
+
+        albero.castShadow = true;
+
+        return albero;
+        }
+
+
+        function makeForest(n){
+          
+          var i;
+          var forest = new THREE.Object3D();
+          
+
+          for(i=0;i<n;i++){
+
+            var albero = new THREE.Object3D();
+            albero = makeThree(albero);
+            var x = getRandomInt(-100, 100);
+            var z= getRandomInt(-100, 100);
+
+            albero.position.x = x;
+            albero.position.z = z;
+
+               // add spotlight for the shadows
+            var spotLight = new THREE.SpotLight( 0xffffff );
+            spotLight.position.set(x-10,-50,z+50);
+            spotLight.intensity = 0.2;
+            spotLight.castShadow = true;
+            albero.add(spotLight); 
+        
+            forest.add(albero);
+              
+              }
+
+        return forest;
+            
+        }
+
+
+
+      });
+    </script>
