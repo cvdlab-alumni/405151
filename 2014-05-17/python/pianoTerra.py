@@ -47,7 +47,7 @@ pianoTerra = diagram2cell(porta2,pianoTerra,146)
 V,CV = pianoTerra
 hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
 hpc = cellNumbering (pianoTerra,hpc)(range(len(CV)),CYAN,2)
-#VIEW(hpc)
+VIEW(hpc)
 
 
 emptyChain = [16,28,41,66,149,129,123,43,45,68,
@@ -126,11 +126,11 @@ ground0 = pianoTerra[0],solidCV
 CV = solidCV + exteriorCV
 V = pianoTerra[0]
 FV = [f for f in larFacets((V,CV),3,len(exteriorCV))[1] if len(f) >= 4]
-#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS((V,FV))))
+VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS((V,FV))))
 BF = boundaryCells(solidCV,FV) 
 boundaryFaces = [FV[face] for face in BF] 
 B_Rep = V,boundaryFaces 
 
-#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS(B_Rep))) 
-#VIEW(STRUCT(MKPOLS(B_Rep)))
+VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS(B_Rep))) 
+VIEW(STRUCT(MKPOLS(B_Rep)))
 

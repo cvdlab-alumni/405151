@@ -11,6 +11,9 @@ from boolean import *
 from sysml import *
 from myfont import *
 from architectural import *
+
+
+
 from scala import *
 from pianoTerra import struttura
 from primoPiano import struttura1
@@ -35,7 +38,6 @@ struttura = S(2)(1.05)(struttura)
 #VIEW(struttura)
 struttura1 = STRUCT([struttura1,scala1])
 #VIEW(struttura1)
-
 
 pianerottolo = CUBOID([1,1,.1])
 pianerottolo = T([1,2])([1.8,4.4])(pianerottolo)
