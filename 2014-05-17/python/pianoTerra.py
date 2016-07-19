@@ -1,17 +1,27 @@
 from pyplasm import *
 from scipy import *
 import os,sys
-sys.path.append("/Users/andreadodero/lar-cc/lib/py") 
-from lar2psm import *
-from simplexn import *
-from larcc import *
-from largrid import *
-from mapper import *
-from boolean import *
-from sysml import *
-from myfont import *
-from architectural import *
-from scala import *
+sys.path.insert(0, '/Users/dodo/UNI/Grafica\ computazionale/lar-cc/lib/py/') 
+
+from larlib import * 
+
+
+def objExporter((V,FV), filePath):
+    out_file = open(filePath,"w")
+    out_file.write("# List of Vertices:\n")
+    for v in V:
+        out_file.write("v")
+        for c in v:
+            out_file.write(" " + str(c))
+        out_file.write("\n")
+    out_file.write("# Face Definitions:\n")
+    for f in FV:
+        out_file.write("f")
+        for v in f:
+            out_file.write(" " + str(v+1))
+        out_file.write("\n")
+    out_file.close()
+    
 
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 DRAW1 = COMP([STRUCT,MKPOLS])
@@ -23,8 +33,11 @@ P_DGRAY	= Color4f([0.6, 0.6, 0.6, 1.0])
 
 
 # piano terra
-pianoTerra = assemblyDiagramInit([7,7,2])([[.3,3,.1,4,.1,1,.3],[.3,3,.1,.7,.1,2,.3],[.3,2.7]])
-#DRAW(pianoTerra)
+pianoTerra = assemblyDiagramInit([7,7,2])([[.3,3,.1,4,.1,1,.3],[.3,2.7,.1,1,.1,2,.3],[.3,2.7]])
+hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
+VIEW(hpc)
+
+
 garage = assemblyDiagramInit([1,1,2])([[1],[.3],[2.2,.5]])
 portaScale = assemblyDiagramInit([1,3,2])([[1],[.2,.8,.2],[2.2,.5]])
 portaSala = assemblyDiagramInit([3,1,2])([[.1,.3,.9],[1],[2.2,.5]])
@@ -44,10 +57,12 @@ pianoTerra = diagram2cell(pareteScala,pianoTerra,23)
 pianoTerra = diagram2cell(garage,pianoTerra,3)
 pianoTerra = diagram2cell(porta2,pianoTerra,146)
 
+
+
 V,CV = pianoTerra
 hpc = SKEL_1(STRUCT(MKPOLS(pianoTerra)))
 hpc = cellNumbering (pianoTerra,hpc)(range(len(CV)),CYAN,2)
-VIEW(hpc)
+#VIEW(hpc)
 
 
 emptyChain = [16,28,41,66,149,129,123,43,45,68,
@@ -121,16 +136,23 @@ first = DRAW1((pianoTerra[0],solidCV))
 scala = R([1,2])(PI/2)(scala)
 first = STRUCT([first, T([1,2,3])([2,3.4,.3])(scala)])
 ground0 = pianoTerra[0],solidCV
-#VIEW(first)
+VIEW(first)
 
 CV = solidCV + exteriorCV
 V = pianoTerra[0]
 FV = [f for f in larFacets((V,CV),3,len(exteriorCV))[1] if len(f) >= 4]
-VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS((V,FV))))
+#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS((V,FV))))
 BF = boundaryCells(solidCV,FV) 
 boundaryFaces = [FV[face] for face in BF] 
 B_Rep = V,boundaryFaces 
 
-VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS(B_Rep))) 
-VIEW(STRUCT(MKPOLS(B_Rep)))
+
+#VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS(B_Rep))) 
+#VIEW(STRUCT(MKPOLS(B_Rep)))
+verts,triangles = quads2tria(B_Rep)
+
+
+#objExporter((verts,triangles), "/Users/andreadodero/Desktop/pianoTerra.obj")
+
+# orderedObj( "/Users/andreadodero/Desktop/pianoTerra.obj")
 

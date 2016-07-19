@@ -1,17 +1,25 @@
 from pyplasm import *
 from scipy import *
 import os,sys
-sys.path.append("/Users/andreadodero/lar-cc/lib/py") 
-from lar2psm import *
-from simplexn import *
-from larcc import *
-from largrid import *
-from mapper import *
-from boolean import *
-from sysml import *
-from myfont import *
-from architectural import *
-from splines import *
+sys.path.insert(0, '/Users/dodo/UNI/Grafica\ computazionale/lar-cc/lib/py/') 
+
+from larlib import * 
+
+def objExporter((V,FV), filePath):
+    out_file = open(filePath,"w")
+    out_file.write("# List of Vertices:\n")
+    for v in V:
+        out_file.write("v")
+        for c in v:
+            out_file.write(" " + str(c))
+        out_file.write("\n")
+    out_file.write("# Face Definitions:\n")
+    for f in FV:
+        out_file.write("f")
+        for v in f:
+            out_file.write(" " + str(v+1))
+        out_file.write("\n")
+    out_file.close()
 
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 DRAW1 = COMP([STRUCT,MKPOLS])
@@ -129,7 +137,7 @@ baseC = T([1,2])([.3,3])(baseC)
 struttura2 = DIFF([struttura2,baseC])
 struttura2 = STRUCT([struttura2,finestra1,finestra2,finestra3,finestra4,finestra5,porta1,porta2,porta3,porta4,porta5,pareteC])
 
-#VIEW(struttura2)
+VIEW(struttura2)
 ground2 = secondoPiano[0],solidCV
 
 CV = solidCV + exteriorCV
@@ -140,4 +148,9 @@ BF = boundaryCells(solidCV,FV)
 boundaryFaces = [FV[face] for face in BF] 
 B_Rep = V,boundaryFaces 
 #VIEW(EXPLODE(1.5,1.5,1.5)(MKPOLS(B_Rep))) 
-#VIEW(STRUCT(MKPOLS(B_Rep)))
+VIEW(STRUCT(MKPOLS(B_Rep)))
+verts,triangles = quads2tria(B_Rep)
+C_rep = verts,triangles
+VIEW(STRUCT(MKPOLS([verts,triangles])))
+
+#objExporter((verts,triangles), "/Users/andreadodero/Desktop/secondoPiano.obj")

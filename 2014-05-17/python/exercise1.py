@@ -1,16 +1,19 @@
 from pyplasm import *
 from scipy import *
 import os,sys
-sys.path.append("/Users/andreadodero/lar-cc/lib/py") 
-from lar2psm import *
-from simplexn import *
-from larcc import *
-from largrid import *
-from mapper import *
-from boolean import *
-from sysml import *
-from myfont import *
-from architectural import *
+sys.path.insert(0, '/Users/dodo/UNI/Grafica\ computazionale/lar-cc/lib/py/') 
+
+from larlib import * 
+
+#from lar2psm import *
+#from simplexn import *
+#from larcc import *
+#from largrid import *
+#from mapper import *
+#from boolean import *
+#from sysml import *
+#from myfont import *
+#from architectural import *
 
 
 
@@ -48,5 +51,10 @@ struttura2 = STRUCT([struttura2,pianerottolo])
 casa = STRUCT([struttura, T(3)(3)(struttura1), T(3)(6)(struttura2)])
 
 VIEW(casa)
+
+
+####################################################################
+
+
 
 
