@@ -1,4 +1,5 @@
-Salk Institute
+[Salk Institute](https://it.wikipedia.org/wiki/Salk_Institute_for_Biological_Studies)
+ 
 
 Il Salk Institute for Biological Studies sorge a La Jolla, California in riva all'Oceano Pacifico. Commissionato nel 1959 dal Jonas Salk all'architetto di origini ebraiche, Louis I. Kahn, l'edificio si avvale di un suggestivo posizionamento su una scogliera lambita dall'oceano, su cui Kahn ha costruito uno degli edifici più importanti del XX secolo.
 
@@ -13,10 +14,7 @@ Questi elementi verticali adibiti ad uffici/studi per i ricercatori del laborato
 Panorama a 360°del cortile del Salk Institute
 Nel 1959 Jonas Salk era alla ricerca di un architetto che progettasse un nuovo edificio per studi biologici a San Diego. Un amico di Salk assisté ad una conferenza di Louis Kahn, e pensò che le idee dell'architetto sarebbero potute piacere a Salk. Quando si conobbero, Kahn e Salk si resero conto di avere interessi simili e l'architetto ottenne l'incarico. Il committente non decise o stilò delle direttive, ma lasciò praticamente carta bianca a Kahn, che di pari passo alla costruzione, continuò la conversazione con Salk, i due trovarono una perfetta sintonia sui metodi e sulla forma dell'edificio. Questo contribuì alla nascita di una stupenda costruzione, adatta allo scopo e voluta fortemente da entrambi.
 
-
-![alt tag](https://it.wikipedia.org/wiki/Salk_Institute_for_Biological_Studies)
-
-
+ 
 
 ![alt tag](salk_pictures/180360V17.jpg)
 
