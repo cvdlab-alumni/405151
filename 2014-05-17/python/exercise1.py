@@ -1,7 +1,5 @@
 from pyplasm import *
-from scipy import *
-import os,sys
-sys.path.insert(0, '/Users/dodo/UNI/Grafica\ computazionale/lar-cc/lib/py/') 
+from scipy import * 
 
 from larlib import * 
 

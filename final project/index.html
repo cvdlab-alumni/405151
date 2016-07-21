@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <title>index</title> 
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #stats {  /* Align stats top-left */
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  </style> 
+  </head>
+  <body>
+  <!-- JavaScript libraries -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+  <script src="assets/libs/TrackballControls.js"></script>
+  <script src="assets/js/mkLights.js"></script>
+  <script src="assets/js/initTexture.js"></script>
+  <script src="assets/js/casa.js"></script>
+  <script src="assets/libs/OBJLoader.js"></script>
+  <script src="assets/js/skybox.js"></script>
+  <script src="assets/js/utilityTextures.js"></script>
+  <script src="assets/js/animation.js"></script>
+  <script src="assets/libs/tween.min.js"></script>
+  <script src="assets/libs/csg.js"></script>
+  <script src="assets/libs/ThreeCSG.js"></script>
+
+  <!-- Javascript code that runs our Three.js examples --> 
+  <script>
+    // once everything is loaded, we run our Three.js stuff.
+var modelsPath = "assets/models/"
+var imagesPath = "assets/textures/";
+var videosPath = "assets/media/videos/";
+var soundsPath = "assets/media/sounds/"
+   
+
+    $(function () {
+
+      var stats = initStats();
+      var loader = new THREE.OBJLoader();
+      var objects = [];
+      var casa = new THREE.Object3D();
+      var controls;
+      var rayMove = new THREE.Raycaster();
+      var rayPointer = new THREE.Raycaster();
+      var projector = new THREE.Projector();
+      var element;
+
+      
+    
+      // create a scene, that will hold all our elements such as objects, cameras and lights.
+      var scene = new THREE.Scene();
+
+
+
+      // create a camera, which defines where we're looking at.
+      var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+
+      // create a render and set the size
+      var renderer = new THREE.WebGLRenderer();
+
+      // create trackball controls
+      var trackballControls = new THREE.TrackballControls(camera);
+
+      rayMove.ray.direction.set(0, 0, -1);
+
+      renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      // position and point the camera to the center of the scene
+      camera.position.set(-30,40,30);
+      camera.up = new THREE.Vector3(0,0,1);
+
+      // add subtle ambient lighting
+      var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+      scene.add(ambientLight);
+
+
+      // add axis helper
+      var axisHelper = new THREE.AxisHelper(3);
+      scene.add(axisHelper);
+
+
+       skybox = makeSkyBox(550,550,550);
+      skybox.position.set(0,0,0);   
+      scene.add(skybox);
+
+      var terra = new THREE.Object3D();
+      var primo = new THREE.Object3D();
+      var secondo = new THREE.Object3D();
+
+    
+       //casa = pianoTerra(loader, casa, objects);
+       casa = mk_casa(loader,terra,primo,secondo,objects);
+  
+      
+
+     var spot1 =  mkSpotLight(600,100,30, casa);
+     var spot2 =  mkSpotLight(-500,100,30, casa);
+     var spot3 =  mkSpotLight(80,500,30, casa);
+     var spot4 =  mkSpotLight(80,-500,30, casa);
+
+     var spot5 =  mkSpotLight(30,30,600, casa);
+          
+
+
+      scene.add(casa);
+
+    
+      var controls = new function () {
+
+   
+  
+    }
+
+      var gui = new dat.GUI();
+   
+
+      // add the output of the renderer to the html element
+      $('body').append(renderer.domElement);
+
+      // call the render function
+      var step = 0;
+
+      
+      render();
+
+      function render() {
+        stats.update();
+        trackballControls.update();
+        TWEEN.update();
+        // render using requestAnimationFrame
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+
+      function initStats() {
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        $('body').append(stats.domElement);
+        return stats;
+      }
+    });
+  </script>  
+ </body>
+</html>
