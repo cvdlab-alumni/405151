@@ -8,10 +8,29 @@ L'istituto vanta un vasto cortile interno che evoca la maestosità di una catted
 ![alt tag](salk_pictures/180360V17.jpg)
 
 
-![alt tag](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRwDOBgbInognXklVUPRK4uGcZy0z6GLQMKicl9igAwRYeNXdGkbg)
+![alt tag](salk_pictures/altitude-cam-Salk-Institute-small.jpg)
+
+![alt tag](salk_pictures/16082074902_33b1449c0f_b.jpg)
+
+![alt tag](salk_pictures/salk_institute_drawings.jpg)
 
 
-![alt tag](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRCaKhMwMvJdjcQSVXZTszDaC7msmdmqmgGnHPHiwrSlhdoMEh5)
+![alt tag](salk_pictures/salk.jpg)
 
 
-![alt tag](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv-mN-YTfwGWumc2kITadgmO6vILd8mrMgyrKgh3yKDzN_oiwc-w)
+![alt tag](salk_pictures/Salk_Institute1.jpg)
+
+
+![alt tag](salk_pictures/1.png)
+
+![alt tag](salk_pictures/2.png)
+
+![alt tag](salk_pictures/3.png)
+
+![alt tag](salk_pictures/4.png)
+
+![alt tag](salk_pictures/5.png)
+
+![alt tag](salk_pictures/6.png)
+
+![alt tag](salk_pictures/7.png) 
