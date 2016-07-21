@@ -1,4 +1,6 @@
 from larlib import *
+from ringhiera import *
+from finestra import *
 
 def VIEWNumbers(numberSize):
 	def VIEWNumbers0(V,EV,FV=[],CV=[]):
@@ -170,7 +172,7 @@ pianoterraWallsSpec = T(3)(.125)(pianoterraWallsSpec)
 
 #VIEW(pianoterraWalls)
 
-filename = "torreinterna/pavimentoTerra.svg"
+filename = "torreinterna/pavimentoTerra_1.svg"
 lines = svg2lines(filename)
 V,FV,EV,polygons = larFromLines(lines,True)
 #VIEWNumbers(1)(V,EV,FV)
@@ -247,6 +249,33 @@ pavimentoPrimoSpec = STRUCT([pavimentoPrimoSpec, murettoSpec])
 secondoPiano = STRUCT([ pavimentoPrimo , T([3])([-.001])(secondopianoWalls) ])
 secondoPianoSpec = STRUCT([ pavimentoPrimoSpec , secondopianoWallsSpec ])
 
+ringhiera1 = STRUCT(ringhiera(10))
+ringhiera1 = S([1,2,3])([.025,.025,.02])(ringhiera1)
+ringhiera1 = R([1,2])(PI/2)(ringhiera1)
+ringhiera1 = T([1,2])([-.15,.22])(ringhiera1)
+
+ringhiera2 = STRUCT(ringhiera(10))
+ringhiera2 = S([1,2,3])([.018,.018,.02])(ringhiera2)
+ringhiera2 = R([1,2])(PI/2)(ringhiera2)
+ringhiera2 = T([1,2])([-.59,.19])(ringhiera2)
+
+ringhiera3 = STRUCT(ringhiera(10))
+ringhiera3 = S([1,2,3])([.025,.025,.02])(ringhiera3)
+ringhiera3 = R([1,2])(PI/2)(ringhiera3)
+ringhiera3 = T([1,2])([.375,.22])(ringhiera3)
+
+ringhiera4 = STRUCT(ringhiera(10))
+ringhiera4 = S([1,2,3])([.018,.018,.02])(ringhiera4)
+ringhiera4 = R([1,2])(PI/2)(ringhiera4)
+ringhiera4 = T([1,2])([.75,.19])(ringhiera4)
+
+secondoPiano = STRUCT([secondoPiano, ringhiera3, ringhiera4])
+#VIEW(secondoPiano)
+
+secondoPianoSpec = STRUCT([secondoPianoSpec, ringhiera2, ringhiera1])
+#VIEW(secondoPianoSpec)
+
+
 #VIEW(STRUCT([secondoPianoSpec, secondoPiano]))
  
 lines = svg2lines("torreinterna/ultimo.svg")
@@ -263,7 +292,24 @@ ultimopianoWallsSpec =  T(3)(0.125)(ultimopianoWallsSpec)
 ultimopiano = STRUCT([ pavimentoSecondo , T([3])([-.001])(ultimopianoWalls), T([3])([.12])(tetto) ])
 ultimopianoSpec = STRUCT([ pavimentoSecondoSpec , T([3])([-.001])(ultimopianoWallsSpec), T([3])([.12])(tettoSpec) ])
 
-#VIEW(STRUCT([ultimopiano, ultimopianoSpec]))
+finestra1 = finestra()
+finestra1 = S([1,2,3])([.17,.1,.11])(finestra1)
+finestra1 = T([1,2,3])([-.75,.19,.01])(finestra1)
+ 
+finestra2 = finestra()
+finestra2 = S([1,2,3])([.25,.1,.11])(finestra2)
+finestra2 = T([1,2,3])([-.38,.2,.01])(finestra2)
+
+finestra3 = finestra()
+finestra3 = S([1,2,3])([.17,.1,.11])(finestra3)
+finestra3 = T([1,2,3])([.585,.19,.01])(finestra3)
+ 
+finestra4 = finestra()
+finestra4 = S([1,2,3])([.25,.1,.11])(finestra4)
+finestra4 = T([1,2,3])([.14,.2,.01])(finestra4)
+
+ultimopiano = STRUCT([ultimopiano, finestra3, finestra4])
+ultimopianoSpec = STRUCT([ultimopianoSpec, finestra1, finestra2])
 
 torretta = STRUCT([ torrettaWalls , T(3)(.115)(pavimentoTorretta) ])
 lasttorretta = STRUCT([ torrettaWalls , T(3)(.115)(tettoTorretta) ])
@@ -281,6 +327,6 @@ torrettaInternaSpec = TREE(TOP)([ torrettaSpec, torrettaSpec , torrettaSpec, tor
 torreInterna = TREE(TOP)([ fondamentaWalls, pianoTerra , primoPiano, secondoPiano, ultimopiano])
 
 torreInternaSpec = TREE(TOP)([ fondamentaWallsSpec, pianoTerraSpec, primoPianoSpec, secondoPianoSpec, ultimopianoSpec ])
-VIEW(torreInternaSpec)
+#VIEW(torreInternaSpec)
 
  

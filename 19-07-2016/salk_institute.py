@@ -53,7 +53,9 @@ scalinata = T([1,2])([1.85,-.36])(scalinata)
 scalinata = S([1,2,3])([1.06,1.01,1.1])(scalinata)
 
 building = STRUCT([palazzo1, T(1)(4)(palazzo2)])
-building =  STRUCT([ T([1,2,3])([1.4,.5,.125])(base2), building, scalinata ])
+
+base2 = T([1,2,3])([1.4,.28,.125])(base2)
+building =  STRUCT([ base2, building, scalinata ])
 #VIEW(STRUCT([base, T([1,2])([2,2])(building)]))
 VIEW(building)
  

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 612 792" style="enable-background:new 0 0 612 792;" xml:space="preserve">
+<style type="text/css">
+	.st0{display:none;}
+	.st1{fill:none;stroke:#221F1F;stroke-width:5;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
+</style>
+<g id="Layer_2" class="st0">
+	
+		<image style="display:inline;overflow:visible;enable-background:new    ;" width="408" height="343" xlink:href="57CD92781B16B464.png"  transform="matrix(1 0 0 1 116 189)">
+	</image>
+</g>
+<g id="soffittoFondamenta">
+	<line class="st1" x1="220" y1="218.8" x2="220" y2="355.3"/>
+	<line class="st1" x1="163.9" y1="355.3" x2="220" y2="355.3"/>
+	<line class="st1" x1="355.3" y1="218.4" x2="220" y2="218.8"/>
+	<line class="st1" x1="405.3" y1="355.3" x2="355.3" y2="355.3"/>
+	<line class="st1" x1="355.3" y1="218.4" x2="355.3" y2="355.3"/>
+	<line class="st1" x1="163.9" y1="355.3" x2="165" y2="539"/>
+	<line class="st1" x1="405.3" y1="355.3" x2="405.3" y2="539"/>
+</g>
+<line class="st1" x1="259" y1="259" x2="320" y2="259"/>
+<line class="st1" x1="321" y1="348.4" x2="320" y2="259"/>
+<line class="st1" x1="259" y1="348.4" x2="321" y2="348.4"/>
+<line class="st1" x1="259" y1="259" x2="259" y2="348.4"/>
+<line class="st2" x1="405.3" y1="539" x2="165" y2="539"/>
+</svg>
